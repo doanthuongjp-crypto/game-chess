@@ -45,8 +45,7 @@ public abstract class Piece {
         }
     }
 
-    /**
-     * Hàm hỗ trợ kiểm tra đường đi trống (dùng cho Xe, Tịnh, Hậu)
+    /** Hàm hỗ trợ kiểm tra đường đi trống (dùng cho Xe, Tịnh, Hậu)
      */
     protected boolean isPathClear(int targetRow, int targetCol, Piece[][] board) {
         int rowStep = Integer.compare(targetRow, this.row);
