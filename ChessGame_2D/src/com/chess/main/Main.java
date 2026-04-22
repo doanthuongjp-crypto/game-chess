@@ -33,7 +33,7 @@ public class Main {
     }
 
     private static void setupStartingPosition(Piece[][] board) {
-        // Đặt quân Đen
+        //Black
         board[0][0] = new Rook(0, 0, false);
         board[0][7] = new Rook(0, 7, false);
         board[0][1] = new Knight(0, 1, false);
@@ -44,7 +44,7 @@ public class Main {
         board[0][4] = new King(0, 4, false);
         for (int i = 0; i < 8; i++) board[1][i] = new Pawn(1, i, false);
 
-        // Đặt quân Trắng
+        // White
         board[7][0] = new Rook(7, 0, true);
         board[7][7] = new Rook(7, 7, true);
         board[7][1] = new Knight(7, 1, true);
