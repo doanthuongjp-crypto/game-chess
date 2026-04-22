@@ -1,0 +1,18 @@
+package com.chess.main;
+
+import javax.swing.JFrame;
+
+public class Main {
+    public static void main(String[] args) {
+        // Tạo cửa sổ game
+        JFrame window = new JFrame();
+        window.setTitle("Chess Game 2D - Eclipse Project");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Tắt chương trình khi đóng cửa sổ
+        window.setResizable(false); // Không cho phép thay đổi kích thước cửa sổ
+        
+        // Thiết lập kích thước bàn cờ (ví dụ: 8 ô x 80px = 640px)
+        window.setSize(640, 660); 
+        window.setLocationRelativeTo(null); // Hiển thị cửa sổ ở giữa màn hình
+        window.setVisible(true); // Hiển thị cửa sổ
+    }
+}

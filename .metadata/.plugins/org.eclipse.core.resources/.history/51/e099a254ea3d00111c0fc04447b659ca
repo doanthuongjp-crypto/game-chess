@@ -1,0 +1,11 @@
+package com.chess.model;
+
+public class Rook extends Piece {
+
+	@Override
+	public boolean isValidMove(int targetRow, int targetCol, Piece[][] board) {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
+	}
+
+}

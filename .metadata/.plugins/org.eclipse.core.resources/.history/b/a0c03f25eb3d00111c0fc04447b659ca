@@ -1,0 +1,57 @@
+package com.chess.view;
+
+import javax.swing.*;
+import java.awt.*;
+import com.chess.model.*;
+
+public class GamePanel extends JPanel {
+    private final int TILE_SIZE = 80; // Mỗi ô vuông rộng 80px
+    private Piece[][] board;
+
+    public GamePanel(Piece[][] board) {
+        this.board = board;
+        this.setPreferredSize(new Dimension(8 * TILE_SIZE, 8 * TILE_SIZE));
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawBoard(g);
+        drawPieces(g);
+    }
+
+    // Hàm vẽ bàn cờ 8x8
+    private void drawBoard(Graphics g) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                // Xen kẽ màu trắng và xanh lá đặc trưng của bàn cờ vua
+                if ((row + col) % 2 == 0) {
+                    g.setColor(new Color(235, 235, 208));
+                } else {
+                    g.setColor(new Color(119, 148, 85));
+                }
+                g.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            }
+        }
+    }
+
+    // Hàm vẽ các quân cờ hiện có trên mảng board
+    private void drawPieces(Graphics g) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece p = board[row][col];
+                if (p != null) {
+                    // Tạm thời vẽ bằng chữ cái để bạn chưa cần chuẩn bị ảnh ngay
+                    g.setColor(p.isWhite ? Color.WHITE : Color.BLACK);
+                    g.setFont(new Font("Arial", Font.BOLD, 30));
+                    
+                    // Lấy chữ cái đầu của tên quân cờ (ví dụ: "R" cho Rook)
+                    String label = p.name.substring(0, 1);
+                    if (p instanceof Knight) label = "N"; // Knight thường ký hiệu là N
+                    
+                    g.drawString(label, col * TILE_SIZE + 25, row * TILE_SIZE + 50);
+                }
+            }
+        }
+    }
+}

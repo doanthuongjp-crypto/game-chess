@@ -1,0 +1,13 @@
+package com.chess.model;
+
+public class Bishop extends Piece {
+    public Bishop(int row, int col, boolean isWhite) {
+        super(row, col, isWhite, "Bishop");
+    }
+
+    @Override
+    public boolean isValidMove(int targetRow, int targetCol, Piece[][] board) {
+        // Trị tuyệt đối của hiệu dòng = hiệu cột (đi chéo)
+        return Math.abs(targetRow - this.row) == Math.abs(targetCol - this.col);
+    }
+}

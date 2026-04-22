@@ -1,0 +1,17 @@
+package com.chess.model;
+
+public class Knight extends Piece {
+
+    public Knight(int row, int col, boolean isWhite) {
+        super(row, col, isWhite, "Knight");
+    }
+
+    @Override
+    public boolean isValidMove(int targetRow, int targetCol, Piece[][] board) {
+        int rowDiff = Math.abs(targetRow - this.row);
+        int colDiff = Math.abs(targetCol - this.col);
+        
+        // Luật hình chữ L: (2 dọc 1 ngang) hoặc (1 dọc 2 ngang)
+        return (rowDiff * colDiff == 2);
+    }
+}

@@ -1,0 +1,16 @@
+package com.chess.model;
+
+public class King extends Piece {
+    public King(int row, int col, boolean isWhite) {
+        super(row, col, isWhite, "King");
+    }
+
+    @Override
+    public boolean isValidMove(int targetRow, int targetCol, Piece[][] board) {
+        int rowDiff = Math.abs(targetRow - this.row);
+        int colDiff = Math.abs(targetCol - this.col);
+
+        // Tổng khoảng cách không quá 1 ô theo mỗi chiều
+        return (rowDiff <= 1 && colDiff <= 1);
+    }
+}

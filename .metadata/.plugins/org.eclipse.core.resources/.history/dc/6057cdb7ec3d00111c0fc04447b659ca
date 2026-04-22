@@ -1,0 +1,49 @@
+package com.chess.controller;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import com.chess.model.Piece;
+import com.chess.view.GamePanel;
+
+public class ChessController extends MouseAdapter {
+    private Piece[][] board;
+    private GamePanel view;
+    private Piece selectedPiece = null;
+    private final int TILE_SIZE = 80;
+
+    public ChessController(Piece[][] board, GamePanel view) {
+        this.board = board;
+        this.view = view;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // Chuyển đổi tọa độ pixel chuột sang tọa độ mảng (0-7)
+        int col = e.getX() / TILE_SIZE;
+        int row = e.getY() / TILE_SIZE;
+
+        if (selectedPiece == null) {
+            // Lần click 1: Chọn quân cờ
+            if (board[row][col] != null) {
+                selectedPiece = board[row][col];
+                System.out.println("Đã chọn quân: " + selectedPiece.name);
+            }
+        } else {
+            // Lần click 2: Di chuyển quân cờ
+            if (selectedPiece.isValidMove(row, col, board)) {
+                // Cập nhật vị trí trong mảng logic
+                board[selectedPiece.row][selectedPiece.col] = null; // Ô cũ thành trống
+                selectedPiece.row = row; // Cập nhật tọa độ mới cho quân cờ
+                selectedPiece.col = col;
+                board[row][col] = selectedPiece; // Đặt quân cờ vào ô mới
+                
+                System.out.println("Di chuyển thành công!");
+            } else {
+                System.out.println("Nước đi không hợp lệ!");
+            }
+            
+            selectedPiece = null; // Bỏ chọn quân cờ
+            view.repaint(); // Yêu cầu vẽ lại giao diện
+        }
+    }
+}

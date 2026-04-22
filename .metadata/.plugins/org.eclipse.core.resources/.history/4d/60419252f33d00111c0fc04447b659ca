@@ -1,0 +1,77 @@
+package com.chess.controller;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import com.chess.model.Piece;
+import com.chess.view.GamePanel;
+
+public class ChessController extends MouseAdapter {
+    private Piece[][] board;
+    private GamePanel view;
+    private Piece selectedPiece = null;
+    private boolean whiteTurn = true; 
+    private final int TILE_SIZE = 80;
+
+    public ChessController(Piece[][] board, GamePanel view) {
+        this.board = board;
+        this.view = view;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int col = e.getX() / TILE_SIZE;
+        int row = e.getY() / TILE_SIZE;
+
+        // 1. Kiểm tra nếu click ngoài phạm vi bàn cờ (Tránh crash game)
+        if (row < 0 || row >= 8 || col < 0 || col >= 8) {
+            selectedPiece = null;
+            view.repaint();
+            return;
+        }
+
+        if (selectedPiece == null) {
+            // --- LẦN CLICK 1: CHỌN QUÂN ---
+            Piece p = board[row][col];
+            if (p != null && p.isWhite == whiteTurn) {
+                selectedPiece = p;
+                System.out.println("Đã chọn: " + p.name + " tại [" + row + "," + col + "]");
+            }
+        } else {
+            // --- LẦN CLICK 2: DI CHUYỂN ---
+            
+            // 2. Nếu click lại vào quân khác của mình -> Đổi sang chọn quân đó
+            Piece targetPiece = board[row][col];
+            if (targetPiece != null && targetPiece.isWhite == whiteTurn) {
+                selectedPiece = targetPiece;
+                System.out.println("Chọn lại quân: " + selectedPiece.name);
+                view.repaint();
+                return; // Kết thúc để đợi click tiếp theo
+            }
+
+            // 3. Kiểm tra luật di chuyển (isValidMove đã bao gồm check ăn quân đối phương)
+            if (selectedPiece.isValidMove(row, col, board)) {
+                // Xóa quân ở vị trí cũ
+                board[selectedPiece.row][selectedPiece.col] = null;
+                
+                // Cập nhật tọa độ mới cho quân cờ
+                selectedPiece.row = row;
+                selectedPiece.col = col;
+                
+                // Đặt quân vào vị trí mới (ghi đè lên quân địch nếu có)
+                board[row][col] = selectedPiece;
+
+                // Đổi lượt đi
+                whiteTurn = !whiteTurn;
+                System.out.println("Di chuyển thành công. Lượt tiếp theo: " + (whiteTurn ? "Trắng" : "Đen"));
+            } else {
+                System.out.println("Nước đi không hợp lệ!");
+            }
+
+            // Reset trạng thái sau khi thực hiện/thử thực hiện di chuyển
+            selectedPiece = null;
+        }
+        
+        // Luôn repaint để cập nhật giao diện
+        view.repaint();
+    }
+}

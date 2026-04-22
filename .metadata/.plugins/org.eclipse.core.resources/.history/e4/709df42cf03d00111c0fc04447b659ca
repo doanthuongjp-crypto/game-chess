@@ -1,0 +1,29 @@
+package com.chess.model;
+
+public class Pawn extends Piece {
+    public Pawn(int row, int col, boolean isWhite) {
+        super(row, col, isWhite, "Pawn");
+    }
+
+    @Override
+    public boolean isValidMove(int targetRow, int targetCol, Piece[][] board) {
+        int direction = isWhite ? -1 : 1; // Trắng đi lên (-1), Đen đi xuống (+1)
+
+        // 1. Đi thẳng 1 ô (nếu ô đích trống)
+        if (targetCol == this.col && targetRow == this.row + direction) {
+            return board[targetRow][targetCol] == null;
+        }
+
+        // 2. Đi thẳng 2 ô (nếu ở vị trí xuất phát)
+        if (targetCol == this.col && (this.row == 1 || this.row == 6) && targetRow == this.row + 2 * direction) {
+            return board[targetRow][targetCol] == null;
+        }
+
+        // 3. Ăn chéo
+        if (Math.abs(targetCol - this.col) == 1 && targetRow == this.row + direction) {
+            return board[targetRow][targetCol] != null && board[targetRow][targetCol].isWhite != this.isWhite;
+        }
+
+        return false;
+    }
+}

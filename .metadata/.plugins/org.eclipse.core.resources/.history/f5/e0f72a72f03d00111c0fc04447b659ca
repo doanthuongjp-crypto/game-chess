@@ -1,0 +1,45 @@
+package com.chess.view;
+
+import javax.swing.*;
+import java.awt.*;
+import com.chess.model.Piece;
+
+public class GamePanel extends JPanel {
+    private final int TILE_SIZE = 80;
+    private Piece[][] board;
+
+    public GamePanel(Piece[][] board) {
+        this.board = board;
+        this.setPreferredSize(new Dimension(8 * TILE_SIZE, 8 * TILE_SIZE));
+        this.setBackground(Color.BLACK);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawBoard(g);
+        drawPieces(g);
+    }
+
+    private void drawBoard(Graphics g) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if ((row + col) % 2 == 0) g.setColor(new Color(235, 235, 208));
+                else g.setColor(new Color(119, 148, 85));
+                g.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            }
+        }
+    }
+
+    private void drawPieces(Graphics g) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece p = board[row][col];
+                if (p != null && p.img != null) {
+                    // Vẽ hình ảnh quân cờ từ dữ liệu Piece
+                    g.drawImage(p.img, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
+                }
+            }
+        }
+    }
+}

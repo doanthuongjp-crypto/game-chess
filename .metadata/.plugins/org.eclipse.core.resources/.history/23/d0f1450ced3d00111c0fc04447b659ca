@@ -1,0 +1,43 @@
+package com.chess.main;
+
+import javax.swing.JFrame;
+import com.chess.model.*;
+import com.chess.view.GamePanel;
+import com.chess.controller.ChessController; // 1. Import thêm Controller
+
+public class Main {
+    public static void main(String[] args) {
+        
+        // --- PHẦN 1: KHỞI TẠO DỮ LIỆU (Giữ nguyên hoặc thêm quân cờ) ---
+        Piece[][] board = new Piece[8][8];
+        
+        // Đặt một vài quân cờ để test di chuyển
+        board[0][0] = new Rook(0, 0, false);   // Xe Đen ở góc trên trái
+        board[7][1] = new Knight(7, 1, true);  // Mã Trắng ở hàng dưới
+        board[1][1] = new Pawn(1, 1, false);   // Tốt Đen
+        board[7][4] = new King(7, 4, true);    // Vua Trắng
+
+        // --- PHẦN 2: THIẾT LẬP GIAO DIỆN (JFrame) ---
+        JFrame window = new JFrame("Chess Game 2D - Hoan Thien");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        
+        // Tạo GamePanel
+        GamePanel gamePanel = new GamePanel(board);
+        window.add(gamePanel);
+
+        // --- PHẦN 3: KẾT NỐI CONTROLLER (Phần mới thêm vào) ---
+        // Chúng ta tạo bộ điều khiển và đưa dữ liệu (board, gamePanel) vào đó
+        ChessController controller = new ChessController(board, gamePanel);
+        
+        // Đăng ký sự kiện chuột: Khi click vào gamePanel, controller sẽ xử lý
+        gamePanel.addMouseListener(controller);
+
+        // --- PHẦN 4: HIỂN THỊ ---
+        window.pack(); 
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+        
+        System.out.println("Game dang chay... Hay click vao quan co de di chuyen!");
+    }
+}

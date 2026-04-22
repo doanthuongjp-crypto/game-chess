@@ -1,0 +1,48 @@
+package com.chess.controller;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import com.chess.model.Piece;
+import com.chess.view.GamePanel;
+
+public class ChessController extends MouseAdapter {
+    private Piece[][] board;
+    private GamePanel view;
+    private Piece selectedPiece = null;
+    private boolean whiteTurn = true; // Bắt đầu là lượt Trắng
+    private final int TILE_SIZE = 80;
+
+    public ChessController(Piece[][] board, GamePanel view) {
+        this.board = board;
+        this.view = view;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int col = e.getX() / TILE_SIZE;
+        int row = e.getY() / TILE_SIZE;
+
+        if (selectedPiece == null) {
+            Piece p = board[row][col];
+            // Chỉ cho chọn nếu đúng quân của phe đang đến lượt
+            if (p != null && p.isWhite == whiteTurn) {
+                selectedPiece = p;
+            }
+        } else {
+            if (selectedPiece.isValidMove(row, col, board)) {
+                // Thực hiện di chuyển
+                board[selectedPiece.row][selectedPiece.col] = null;
+                selectedPiece.row = row;
+                selectedPiece.col = col;
+                board[row][col] = selectedPiece;
+
+                // Đổi lượt đi
+                whiteTurn = !whiteTurn;
+                System.out.println("Lượt tiếp theo: " + (whiteTurn ? "Trắng" : "Đen"));
+            }
+            selectedPiece = null;
+            view.repaint();
+        }
+    }
+}

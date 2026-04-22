@@ -1,0 +1,16 @@
+package com.chess.model;
+
+public class Queen extends Piece {
+    public Queen(int row, int col, boolean isWhite) {
+        super(row, col, isWhite, "Queen");
+    }
+
+    @Override
+    public boolean isValidMove(int targetRow, int targetCol, Piece[][] board) {
+        int rowDiff = Math.abs(targetRow - this.row);
+        int colDiff = Math.abs(targetCol - this.col);
+
+        // Đi thẳng/ngang (giống Xe) HOẶC đi chéo (giống Tịnh)
+        return (this.row == targetRow || this.col == targetCol) || (rowDiff == colDiff);
+    }
+}

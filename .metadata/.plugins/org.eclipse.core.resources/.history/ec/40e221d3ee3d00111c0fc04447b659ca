@@ -1,0 +1,73 @@
+package com.chess.model;
+
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
+public abstract class Piece {
+    public int row, col;        // Vị trí hiện tại trên bàn cờ (0-7)
+    public boolean isWhite;     // Phe trắng (true) hoặc phe đen (false)
+    public String name;         // Tên quân cờ để xác định loại
+    public Image img;           // Hình ảnh đại diện quân cờ
+
+    public Piece(int row, int col, boolean isWhite, String name) {
+        this.row = row;
+        this.col = col;
+        this.isWhite = isWhite;
+        this.name = name;
+        this.img = loadImage(); // Tự động tải ảnh khi khởi tạo
+    }
+
+    /**
+     * Hàm tải hình ảnh từ thư mục res.
+     * Tên file quy ước: w_queen.png, b_knight.png, v.v.
+     */
+    private Image loadImage() {
+        try {
+            // Xác định tiền tố màu: w (white) hoặc b (black)
+            String colorPrefix = isWhite ? "w_" : "b_";
+            // Đường dẫn file trong thư mục res
+            String path = "/res/" + colorPrefix + name.toLowerCase() + ".png";
+            
+            // Cách tải ảnh chuẩn trong Java Swing để đảm bảo chạy được sau khi đóng gói
+            java.net.URL imgURL = getClass().getResource(path);
+            if (imgURL != null) {
+                return new ImageIcon(imgURL).getImage();
+            } else {
+                System.err.println("Không tìm thấy ảnh: " + path);
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Kiểm tra xem đường đi thẳng (Xe/Hậu) có bị chặn hay không
+     */
+    protected boolean isPathClear(int targetRow, int targetCol, Piece[][] board) {
+        int rowStep = Integer.compare(targetRow, this.row);
+        int colStep = Integer.compare(targetCol, this.col);
+
+        int currRow = this.row + rowStep;
+        int currCol = this.col + colStep;
+
+        while (currRow != targetRow || currCol != targetCol) {
+            if (board[currRow][currCol] != null) {
+                return false; // Có vật cản
+            }
+            currRow += rowStep;
+            currCol += colStep;
+        }
+        return true;
+    }
+
+    /**
+     * Hàm trừu tượng: Mỗi quân cờ sẽ có luật di chuyển riêng biệt
+     */
+    public abstract boolean isValidMove(int targetRow, int targetCol, Piece[][] board);
+}

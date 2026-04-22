@@ -1,0 +1,29 @@
+package com.chess.main;
+
+import javax.swing.JFrame;
+import com.chess.model.*;
+import com.chess.view.GamePanel;
+
+public class Main {
+    public static void main(String[] args) {
+        // 1. Khởi tạo mảng bàn cờ và đặt vài quân cờ mẫu
+        Piece[][] board = new Piece[8][8];
+        
+        // Thử đặt quân Xe đen và quân Mã trắng
+        board[0][0] = new Rook(0, 0, false);
+        board[7][1] = new Knight(7, 1, true);
+        
+        // 2. Thiết lập cửa sổ
+        JFrame window = new JFrame("Chess 2D - Framework");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        
+        // 3. Thêm GamePanel vào cửa sổ
+        GamePanel gamePanel = new GamePanel(board);
+        window.add(gamePanel);
+        
+        window.pack(); // Tự động co dãn cửa sổ vừa khít với GamePanel
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+    }
+}

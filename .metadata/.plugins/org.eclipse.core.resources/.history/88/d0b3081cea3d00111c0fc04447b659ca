@@ -1,0 +1,22 @@
+package com.chess.model;
+
+import java.awt.Image;
+
+public abstract class Piece {
+    public int row, col;        // Vị trí của quân cờ trên bàn cờ (0-7)
+    public boolean isWhite;     // Màu sắc: true = Trắng, false = Đen
+    public String name;         // Tên quân cờ (Pawn, Rook, Knight...)
+
+    public Piece(int row, int col, boolean isWhite, String name) {
+        this.row = row;
+        this.col = col;
+        this.isWhite = isWhite;
+        this.name = name;
+    }
+
+    /**
+     * Hàm trừu tượng để kiểm tra nước đi hợp lệ.
+     * Mỗi quân cờ cụ thể (Mã, Tịnh, Xe...) sẽ tự viết luật riêng ở đây.
+     */
+    public abstract boolean isValidMove(int targetRow, int targetCol, Piece[][] board);
+}
