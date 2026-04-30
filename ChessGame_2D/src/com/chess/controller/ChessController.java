@@ -4,6 +4,9 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JOptionPane;
+
+import com.chess.model.King; // 重要: 勝利条件を確認するために King クラスをインポートする必要がある
 import com.chess.model.Piece;
 import com.chess.view.GamePanel;
 
@@ -24,19 +27,20 @@ public class ChessController extends MouseAdapter {
         int col = e.getX() / TILE_SIZE;
         int row = e.getY() / TILE_SIZE;
 
+        // 盤面の範囲外をクリックした場合は無視
         if (row < 0 || row >= 8 || col < 0 || col >= 8) return;
 
         if (selectedPiece == null) {
-            // --- LẦN CLICK 1: CHỌN QUÂN ---
+            // --- 1回目のクリック: 駒を選択 ---
             Piece p = board[row][col];
             if (p != null && p.isWhite == whiteTurn) {
                 selectedPiece = p;
                 
-                // CẬP NHẬT HIỆU ỨNG VÀO VIEW
-                view.selectedSquare = new Point(col, row); // Lưu ô đang chọn
+                // ビューに選択状態を反映
+                view.selectedSquare = new Point(col, row);
                 view.validMoves.clear();
                 
-                // Quét toàn bộ bàn cờ để tìm các ô đi được
+                // 盤面全体を走査して移動可能マスを取得
                 for (int r = 0; r < 8; r++) {
                     for (int c = 0; c < 8; c++) {
                         if (selectedPiece.isValidMove(r, c, board)) {
@@ -46,20 +50,45 @@ public class ChessController extends MouseAdapter {
                 }
             }
         } else {
-            // --- LẦN CLICK 2: DI CHUYỂN ---
+            // --- 2回目のクリック: 移動または駒取り ---
             if (selectedPiece.isValidMove(row, col, board)) {
-                board[selectedPiece.row][selectedPiece.col] = null;
-                selectedPiece.row = row;
-                selectedPiece.col = col;
-                board[row][col] = selectedPiece;
-                whiteTurn = !whiteTurn;
+                Piece targetPiece = board[row][col];
+
+                // 勝利条件チェック（キングを取った場合）
+                if (targetPiece instanceof King) {
+                    executeMove(row, col);
+                    view.repaint(); // メッセージ表示前に描画更新
+                    
+                    String winner = whiteTurn ? "白" : "黒";
+                    JOptionPane.showMessageDialog(view, 
+                        "キングが取られました！ " + winner + " の勝利です！", 
+                        "ゲーム終了", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    
+                    System.exit(0); // プログラム終了
+                    return;
+                }
+
+                // 通常の移動処理
+                executeMove(row, col);
+                whiteTurn = !whiteTurn; // 手番交代
             }
             
-            // RESET HIỆU ỨNG SAU KHI ĐI (HOẶC CLICK SAI)
+            // 移動後（または誤クリック後）の選択解除
             selectedPiece = null;
             view.selectedSquare = null;
             view.validMoves.clear();
         }
-        view.repaint(); // Bắt buộc gọi repaint để hiện hiệu ứng
+        view.repaint(); 
+    }
+
+    /**
+     * 駒の位置を board 配列に反映する補助メソッド
+     */
+    private void executeMove(int row, int col) {
+        board[selectedPiece.row][selectedPiece.col] = null;
+        selectedPiece.row = row;
+        selectedPiece.col = col;
+        board[row][col] = selectedPiece;
     }
 }
