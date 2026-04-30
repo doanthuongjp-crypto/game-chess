@@ -7,7 +7,7 @@ public class Bishop extends Piece {
 
     @Override
     public boolean isValidMove(int targetRow, int targetCol, Piece[][] board) {
-        // Đi chéo: hiệu dòng = hiệu cột
+        // 斜めに移動：行の差 = 列の差
         if (Math.abs(targetRow - this.row) == Math.abs(targetCol - this.col)) {
             if (isPathClear(targetRow, targetCol, board)) {
                 Piece target = board[targetRow][targetCol];
