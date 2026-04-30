@@ -34,5 +34,3 @@ Java 21 を基盤とした、オブジェクト指向プログラミング（OOP
 
 4. **実行**: src/com/chess/main/Main.java を実行します。
 
-📸 **デモ** (Screenshots)
-起動画面	                         プレイ中の様子
