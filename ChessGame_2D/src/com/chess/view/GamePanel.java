@@ -16,9 +16,9 @@ public class GamePanel extends JPanel {
     private final int TILE_SIZE = 80;
     private Piece[][] board;
     
-    // --- BIẾN HIỆU ỨNG ---
-    public Point selectedSquare = null; // Ô đang được chọn (x=col, y=row)
-    public List<Point> validMoves = new ArrayList<>(); // Các ô gợi ý
+    // --- ハイライト用の変数 ---
+    public Point selectedSquare = null; // 選択中のマス (x=列, y=行)
+    public List<Point> validMoves = new ArrayList<>(); // 有効な移動先のリスト
 
     public GamePanel(Piece[][] board) {
         this.board = board;
@@ -29,7 +29,7 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawBoard(g);
-        drawHighlights(g); // Vẽ hiệu ứng
+        drawHighlights(g); // ハイライト描画
         drawPieces(g);
     }
 
@@ -45,16 +45,15 @@ public class GamePanel extends JPanel {
     private void drawHighlights(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         
-        // 1. Tô màu vàng ô đang được chọn
+        // 1. 選択中のマスを黄色で表示
         if (selectedSquare != null) {
-            g2.setColor(new Color(255, 255, 0, 120)); // Vàng trong suốt
+            g2.setColor(new Color(255, 255, 0, 120)); // 半透明の黄色
             g2.fillRect(selectedSquare.x * TILE_SIZE, selectedSquare.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         }
 
-        // 2. Vẽ dấu chấm tròn cho các nước đi hợp lệ
-        g2.setColor(new Color(0, 0, 0, 60)); // Đen mờ
+        // 2. 有効な移動先に丸印を描画
+        g2.setColor(new Color(0, 0, 0, 60)); // 半透明の黒
         for (Point p : validMoves) {
-            // Vẽ vòng tròn nhỏ ở tâm ô
             int centerX = p.x * TILE_SIZE + TILE_SIZE / 2;
             int centerY = p.y * TILE_SIZE + TILE_SIZE / 2;
             g2.fillOval(centerX - 10, centerY - 10, 20, 20);
