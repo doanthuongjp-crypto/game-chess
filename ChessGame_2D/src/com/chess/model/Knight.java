@@ -10,7 +10,8 @@ public class Knight extends Piece {
         int rowDiff = Math.abs(targetRow - this.row);
         int colDiff = Math.abs(targetCol - this.col);
         
-        if (rowDiff * colDiff == 2) { // Logic hình chữ L
+        // L字型の移動ロジック
+        if (rowDiff * colDiff == 2) {
             Piece target = board[targetRow][targetCol];
             return target == null || target.isWhite != this.isWhite;
         }
