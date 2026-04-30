@@ -7,7 +7,9 @@ public class Queen extends Piece {
 
     @Override
     public boolean isValidMove(int targetRow, int targetCol, Piece[][] board) {
+        // 斜め移動かどうか
         boolean isDiagonal = Math.abs(targetRow - this.row) == Math.abs(targetCol - this.col);
+        // 縦または横の直線移動かどうか
         boolean isStraight = (this.row == targetRow || this.col == targetCol);
 
         if (isDiagonal || isStraight) {
