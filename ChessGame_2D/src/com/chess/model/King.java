@@ -10,6 +10,7 @@ public class King extends Piece {
         int rowDiff = Math.abs(targetRow - this.row);
         int colDiff = Math.abs(targetCol - this.col);
 
+        // キングは上下左右および斜めに1マスだけ移動できる
         if (rowDiff <= 1 && colDiff <= 1) {
             Piece target = board[targetRow][targetCol];
             return target == null || target.isWhite != this.isWhite;
