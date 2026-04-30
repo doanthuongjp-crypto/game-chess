@@ -30,8 +30,9 @@ Java 21 を基盤とした、オブジェクト指向プログラミング（OOP
    ```bash
    git clone [https://github.com/your-username/ChessGame_2D.git](https://github.com/your-username/ChessGame_2D.git)
 
-プロジェクトの取り込み: お使いの IDE（Eclipse など）にインポートしてください。
+3. **プロジェクトの取り込み**: お使いの IDE（Eclipse など）にインポートしてください。
 
-実行: src/com/chess/main/Main.java を実行します。
+4. **実行**: src/com/chess/main/Main.java を実行します。
 
-📸 デモ (Screenshots)
+📸 **デモ** (Screenshots)
+起動画面	                         プレイ中の様子
